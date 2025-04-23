@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballSense - Accessible Football Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- App Shell -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-futbol"></i>
+                <h1>FootballSense</h1>
+            </div>
+            <button id="settings-button" class="icon-button" aria-label="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </header>
+
+        <!-- Main Content Area - Different views will be shown/hidden here -->
+        <main class="main-container">
+            <!-- Welcome Screen -->
+            <section id="welcome-screen" class="screen active">
+                <div class="welcome-content">
+                    <h2>Welcome to FootballSense</h2>
+                    <p>Experience football matches in real-time with our accessibility features</p>
+                    <div class="welcome-image">
+                        <img src="assets/welcome-image.png" alt="Football accessibility illustration" id="welcome-image-placeholder">
+                    </div>
+                    <button id="get-started-button" class="primary-button">Get Started</button>
+                </div>
+            </section>
+
+            <!-- Accessibility Mode Selection Screen -->
+            <section id="mode-selection-screen" class="screen">
+                <h2>Select Your Accessibility Mode</h2>
+                <p>Choose the mode that best suits your needs</p>
+                
+                <div class="mode-options">
+                    <div class="mode-card" id="deaf-mode-card">
+                        <div class="mode-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Deaf Mode</h3>
+                        <p>Visual feedback with moving arrows to track the ball</p>
+                    </div>
+                    
+                    <div class="mode-card" id="blind-mode-card">
+                        <div class="mode-icon">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <h3>Blind Mode</h3>
+                        <p>3D spatial audio cues to follow the action</p>
+                    </div>
+                </div>
+                
+                <button id="mode-continue-button" class="primary-button" disabled>Continue</button>
+            </section>
+
+            <!-- Team Selection Screen -->
+            <section id="team-selection-screen" class="screen">
+                <h2>Select Your Favorite Team</h2>
+                <p>Choose the team you want to follow</p>
+                
+                <div class="search-container">
+                    <input type="text" id="team-search" placeholder="Search for teams...">
+                    <i class="fas fa-search"></i>
+                </div>
+                
+                <div class="teams-grid" id="teams-grid">
+                    <!-- Teams will be dynamically inserted here -->
+                </div>
+                
+                <button id="team-continue-button" class="primary-button" disabled>Continue</button>
+            </section>
+
+            <!-- EEG Connection Screen -->
+            <section id="eeg-connection-screen" class="screen">
+                <h2>Connect EEG Device</h2>
+                <p>Connect your EEG device to enhance your experience</p>
+                
+                <div class="connection-status">
+                    <div class="status-icon">
+                        <i class="fas fa-spinner fa-spin" id="eeg-status-icon"></i>
+                    </div>
+                    <p id="eeg-status-text">Searching for EEG devices...</p>
+                </div>
+                
+                <div class="eeg-visualization">
+                    <canvas id="eeg-canvas" width="300" height="150"></canvas>
+                </div>
+                
+                <div class="detection-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Ball:</span>
+                        <span class="stat-value" id="ball-status">Searching...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Players:</span>
+                        <span class="stat-value" id="players-count">0 Detected</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Field:</span>
+                        <span class="stat-value" id="field-status">Mapping...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">FPS:</span>
+                        <span class="stat-value" id="fps-counter">0</span>
+                    </div>
+                </div>
+                
+                <div class="emotion-indicators">
+                    <div class="emotion-item">
+                        <span class="emotion-label">Excitement:</span>
+                        <div class="emotion-bar">
+                            <div class="emotion-level" id="excitement-level" style="width: 50%"></div>
+                        </div>
+                    </div>
+                    <div class="emotion-item">
+                        <span class="emotion-label">Focus:</span>
+                        <div class="emotion-bar">
+                            <div class="emotion-level" id="focus-level" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div class="emotion-item">
+                        <span class="emotion-label">Stress:</span>
+                        <div class="emotion-bar">
+                            <div class="emotion-level" id="stress-level" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fusion-progress">
+                    <p>Processing data...</p>
+                    <div class="progress-bar">
+                        <div class="progress" id="loading-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button id="skip-eeg-button" class="secondary-button">Skip</button>
+                    <button id="eeg-continue-button" class="primary-button" disabled>Continue</button>
+                </div>
+            </section>
+
+            <!-- Match Experience Screen (Deaf Mode) -->
+            <section id="deaf-mode-screen" class="screen">
+                <div class="match-header">
+                    <div class="team-info">
+                        <div class="team home-team">
+                            <img src="" alt="Home team" id="home-team-logo">
+                            <span id="home-team-name">Team A</span>
+                        </div>
+                        <div class="score">
+                            <span id="home-score">0</span>
+                            <span>-</span>
+                            <span id="away-score">0</span>
+                        </div>
+                        <div class="team away-team">
+                            <span id="away-team-name">Team B</span>
+                            <img src="" alt="Away team" id="away-team-logo">
+                        </div>
+                    </div>
+                    <div class="match-time">
+                        <span id="match-time">00:00</span>
+                    </div>
+                </div>
+                
+                <div class="field-container">
+                    <div class="football-field" id="deaf-football-field">
+                        <!-- Field markings and players will be added dynamically -->
+                        <div class="direction-arrow" id="direction-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls-container">
+                    <div class="control-panel">
+                        <h3>Visual Settings</h3>
+                        <div class="control-item">
+                            <label for="arrow-size">Arrow Size</label>
+                            <input type="range" id="arrow-size" min="1" max="5" value="3">
+                        </div>
+                        <div class="control-item">
+                            <label for="arrow-speed">Arrow Speed</label>
+                            <input type="range" id="arrow-speed" min="1" max="5" value="3">
+                        </div>
+                        <div class="control-item checkbox">
+                            <label for="high-contrast">High Contrast</label>
+                            <input type="checkbox" id="high-contrast">
+                        </div>
+                        <div class="control-item checkbox">
+                            <label for="deaf-vibration">Vibration</label>
+                            <input type="checkbox" id="deaf-vibration" checked>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Match Experience Screen (Blind Mode) -->
+            <section id="blind-mode-screen" class="screen">
+                <div class="match-header">
+                    <div class="team-info">
+                        <div class="team home-team">
+                            <span id="blind-home-team-name">Team A</span>
+                        </div>
+                        <div class="score">
+                            <span id="blind-home-score">0</span>
+                            <span>-</span>
+                            <span id="blind-away-score">0</span>
+                        </div>
+                        <div class="team away-team">
+                            <span id="blind-away-team-name">Team B</span>
+                        </div>
+                    </div>
+                    <div class="match-time">
+                        <span id="blind-match-time">00:00</span>
+                    </div>
+                </div>
+                
+                <div class="audio-visualization-container">
+                    <canvas id="audio-visualization" width="300" height="150"></canvas>
+                </div>
+                
+                <div class="spatial-field-container">
+                    <div class="spatial-field" id="spatial-field">
+                        <!-- This is a visual representation for demo purposes -->
+                        <div class="sound-source" id="sound-source">
+                            <div class="sound-waves"></div>
+                        </div>
+                        <div class="listener-position">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="audio-controls">
+                    <button class="audio-control-button" id="volume-down">
+                        <i class="fas fa-volume-down"></i>
+                    </button>
+                    <button class="audio-control-button" id="play-pause">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="audio-control-button" id="volume-up">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+                
+                <div class="controls-container">
+                    <div class="control-panel">
+                        <h3>Audio Settings</h3>
+                        <div class="control-item">
+                            <label for="audio-intensity">Sound Intensity</label>
+                            <input type="range" id="audio-intensity" min="1" max="5" value="3">
+                        </div>
+                        <div class="control-item">
+                            <label for="spatial-precision">Spatial Precision</label>
+                            <input type="range" id="spatial-precision" min="1" max="5" value="4">
+                        </div>
+                        <div class="control-item checkbox">
+                            <label for="voice-guidance">Voice Guidance</label>
+                            <input type="checkbox" id="voice-guidance" checked>
+                        </div>
+                        <div class="control-item checkbox">
+                            <label for="blind-vibration">Vibration</label>
+                            <input type="checkbox" id="blind-vibration" checked>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="voice-announcement" id="voice-announcement">
+                    <p id="announcement-text"></p>
+                </div>
+            </section>
+
+            <!-- Settings Screen -->
+            <section id="settings-screen" class="screen">
+                <h2>Settings</h2>
+                
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <label for="accessibility-mode">Accessibility Mode</label>
+                        <select id="accessibility-mode">
+                            <option value="deaf">Deaf Mode</option>
+                            <option value="blind">Blind Mode</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <label for="favorite-team">Favorite Team</label>
+                        <select id="favorite-team">
+                            <!-- Teams will be dynamically inserted here -->
+                        </select>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <label for="notification-settings">Notifications</label>
+                        <select id="notification-settings">
+                            <option value="all">All Notifications</option>
+                            <option value="important">Important Only</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-item checkbox">
+                        <label for="auto-connect-eeg">Auto-connect EEG</label>
+                        <input type="checkbox" id="auto-connect-eeg" checked>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button id="reset-settings" class="secondary-button">Reset to Default</button>
+                    <button id="save-settings" class="primary-button">Save Settings</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Navigation Bar -->
+        <nav class="nav-bar" id="nav-bar">
+            <button class="nav-button" id="home-nav" aria-label="Home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-button" id="matches-nav" aria-label="Matches">
+                <i class="fas fa-futbol"></i>
+                <span>Matches</span>
+            </button>
+            <button class="nav-button" id="teams-nav" aria-label="Teams">
+                <i class="fas fa-users"></i>
+                <span>Teams</span>
+            </button>
+            <button class="nav-button" id="profile-nav" aria-label="Profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="team-logos.js"></script>
+    <script src="eeg-video-analysis.js"></script>
+    <script src="user-flow.js"></script>
+</body>
+</html>
